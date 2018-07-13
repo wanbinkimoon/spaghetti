@@ -31,7 +31,8 @@ boolean DEBUG = false;
 boolean GRID = false;
 boolean MIDI = false;
 boolean showHint = false;
-boolean showPanel = true;
+boolean showPanel = false;
+boolean loopB = false;
 
 // ============================================================
 
@@ -65,6 +66,11 @@ public void draw() {
 	if(showHint)
 		renderHints();
 
+	// if(!loopB) 
+	// 	noLoop();
+	// if(loopB) 
+	// 	loop();
+
 	midiMapper();
 	// audioDataUpdate();
 	renderCircles();
@@ -80,8 +86,11 @@ public void keyPressed(){
 		case 'c':
 			showPanel();
 			break;
-		case 'p':
+		case 's':
 			screenShot();
+			break;
+		case 'p':
+			pauseLoop();
 			break;
 		case 'h':
 			showHelp();
@@ -126,6 +135,21 @@ public void renderHints(){
 	textSize(16);
 	String helpString = "Q: Quit    P: Save screenshot in ./render folder ";
 	text(helpString, 12, 28);
+}
+
+// ================================================================
+
+public void pauseLoop(){
+	loopB = !loopB;
+	// loopB ? noLoop() : loop();
+}
+
+public void mousePressed() {
+  noLoop();
+}
+
+public void mouseReleased() {
+  loop();
 }
 
 
@@ -214,23 +238,29 @@ public void renderCircles() {
 	stroke(0xffD34F1E); noFill();
 
 	translate(width / 2, height /2);
+	// translate(0, height /2);
 	float t = frameCount * .05f;
 	float radius = 80;
 	
 	xMod = 100;
-	float x = cos(t) * xMod;
+	// float x = cos(t) * xMod;
 
 	yMod = 100;
-	float y = sin(t) * yMod;
+	// float y = sin(t) * yMod;
 
-	float angle = t;
-	rotate(angle);
+	float angle = t * .5f;
+	rotate(angle);	
+	
+	float magicX = 20;
+	float magicY = 100;
+	float f = tan(10) * 500;
 
-	// println("xMod: " + xMod + " \u2013 yMod: " + yMod);
-	float w = sin(t/300) * 500;
-	float h = cos(t/130) * 500;
+	float x = t * sin(t) * 10;
+	float y = t * cos(t) * 10;
+	float w = cos(t/magicX) * f / 2;
+	float h = sin(t/magicY) * f / 20;
 
-	ellipse(0, 0, w, h);
+	ellipse(x, y, w, h);
 	
 }
  
