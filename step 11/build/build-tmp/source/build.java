@@ -201,21 +201,16 @@ public void audioDataUpdate(){
   }
 int section = audioRange;
 PVector[] ants = new PVector[section];
+int lines = 10;
 
 // ================================================================
 
 public void renderCircles() {
+	background(0xff2F2F2F);
 
-	background(0xff91300A);
-	stroke(0xffECA106); noFill();
 
-	if(pad[0]) {
-		background(0xffECA106);
-		noStroke(); fill(0xff91300A);
-	}
-
-	int lines = 10;
 	for (int i = 1; i < lines; ++i) {
+		colorizer(i);
 		shapeFormer(i, lines);
 	}
 	
@@ -228,28 +223,65 @@ public void shapeFormer(int line, int maxLines){
 	beginShape();
 	vertex(0, height / 2);
 
-	for (int j = 0; j < audioRange; ++j) {
-		float step = (width / section);
+	int points = (int)map(knob[1], 0, 100, 2, audioRange);
+
+	for (int j = 0; j < points; ++j) {
+		float step = (width / points);
 		float x = (j + 1) * step;
 
 		float audioDiff = audioData[audioIndex];
 		float padding = height / 8;
-		float mover = height / 8;
+
+		float distance = map(knob[0], 0, 100, 0, .5f);
+		float mover = height * distance;
 		float audioCalc = map(audioDiff, 1, 2, mover, -mover); 
 		float fade = audioCalc / maxLines;
-		float fader = audioCalc - (line * fade);
-		float y = (height / 2) + audioCalc - fader;
-
+		float fader = audioCalc - ((maxLines - line) * fade);
+		float y;
+		y = (height / 2) + audioCalc - fader;
+		if(audioDiff == 1) y = (height / 2);
 
 		ants[j] = new PVector(x, y);
 		curveVertex(ants[j].x, ants[j].y);
-		++audioIndex;
+
+		audioIndex += audioRange / points;
 	}
 
-	vertex(width, height / 2);
-	endShape(CLOSE);
+	curveVertex(width, height / 2);
+	endShape();
 
 	audioIndex = 0;
+}
+
+// ================================================================
+
+int[] palette = new int[lines];
+
+// ================================================================
+
+public void colorizer(int index){
+	colorChoice();
+	stroke(palette[index]); noFill();
+	if(pad[0]) {
+		noStroke(); fill(palette[index]);
+	}
+}
+
+// ================================================================
+
+public void colorChoice(){
+	palette[0]  = 0xffffd700;
+	palette[1]  = 0xffffca00;
+	palette[2]  = 0xffffbc00;
+	palette[3]  = 0xffffaf00;
+	palette[4]  = 0xffffa200;
+	palette[5]  = 0xffff9500;
+	palette[6]  = 0xffff8700;
+	palette[7]  = 0xffff7a00;
+	palette[8]  = 0xffff6d00;
+	palette[9]  = 0xffff6000;
+	// palette[10] = #ff5200;
+	// palette[11] = #ff4500;
 }
  
 
