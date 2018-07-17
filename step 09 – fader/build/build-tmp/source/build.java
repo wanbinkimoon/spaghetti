@@ -214,30 +214,35 @@ public void renderCircles() {
 		noStroke(); fill(0xff91300A);
 	}
 
-	shapeFormer();
+	int lines = 10;
+	for (int i = 1; i < lines; ++i) {
+		shapeFormer(i, lines);
+	}
 	
 }
 
 // ================================================================
 
-public void shapeFormer(){
+public void shapeFormer(int line, int maxLines){
 	int audioIndex = 0;
-
 	beginShape();
 	vertex(0, height / 2);
 
-	for (int i = 0; i < audioRange; ++i) {
+	for (int j = 0; j < audioRange; ++j) {
 		float step = (width / section);
-		float x = (i + 1) * step;
+		float x = (j + 1) * step;
 
 		float audioDiff = audioData[audioIndex];
 		float padding = height / 8;
-		float audioCalc = map(audioDiff, 1, 2, height - padding, 0 + padding);
-		float y = audioCalc;
+		float mover = height / 8;
+		float audioCalc = map(audioDiff, 1, 2, mover, -mover); 
+		float fade = audioCalc / maxLines;
+		float fader = audioCalc - (line * fade);
+		float y = (height / 2) + audioCalc - fader;
 
 
-		ants[i] = new PVector(x, y);
-		curveVertex(ants[i].x, ants[i].y);
+		ants[j] = new PVector(x, y);
+		curveVertex(ants[j].x, ants[j].y);
 		++audioIndex;
 	}
 
