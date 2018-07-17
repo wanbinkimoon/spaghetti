@@ -1,6 +1,6 @@
-int stageW      = 800;
-int stageH      = 800;
-color bgC       = #ECA106;
+int stageW      = 1200;
+int stageH      = 400;
+color bgC       = #FFFFFF;
 String dataPATH = "../../data";
 
 // new palette
@@ -25,7 +25,7 @@ void settings(){
 
 void setup() {
 	midiSetup();
-	// audioSettings();
+	audioSettings();
 
 	surface.setResizable(true);
   // surface.setIconImage(icon.image);
@@ -35,13 +35,15 @@ void setup() {
 
 // ================================================================
 void draw() {
+	background(bgC, 20);
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("❀ – Spaghetti – FPS: " + FPS);
 	if(showHint)
 		renderHints();
 
 	midiMapper();
-	// audioDataUpdate();
+	audioDataUpdate();
+
 	renderCircles();
 }
 

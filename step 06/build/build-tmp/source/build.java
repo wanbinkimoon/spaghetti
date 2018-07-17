@@ -18,9 +18,9 @@ import java.io.IOException;
 
 public class build extends PApplet {
 
-int stageW      = 800;
-int stageH      = 800;
-int bgC       = 0xffECA106;
+int stageW      = 1200;
+int stageH      = 400;
+int bgC       = 0xffFFFFFF;
 String dataPATH = "../../data";
 
 // new palette
@@ -45,7 +45,7 @@ public void settings(){
 
 public void setup() {
 	midiSetup();
-	// audioSettings();
+	audioSettings();
 
 	surface.setResizable(true);
   // surface.setIconImage(icon.image);
@@ -55,13 +55,15 @@ public void setup() {
 
 // ================================================================
 public void draw() {
+	background(bgC, 20);
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("\u2740 \u2013 Spaghetti \u2013 FPS: " + FPS);
 	if(showHint)
 		renderHints();
 
 	midiMapper();
-	// audioDataUpdate();
+	audioDataUpdate();
+
 	renderCircles();
 }
 
@@ -77,12 +79,6 @@ public void keyPressed(){
 			break;
 		case 'h':
 			showHelp();
-			break;
-		case 'p':
-			noLoop();
-			break;
-		default: 
-			loop();
 			break;
 	}
 }
@@ -144,12 +140,12 @@ FFT audioFFT;
 
 // ================================================================
 
-int audioRange  = 12;
+int audioRange  = 128;
 int audioMax = 100;
 
-float audioAmp = 412.0f;
-float audioIndex = 0.69f;
-float audioIndexStep = 0.518f;
+float audioAmp = 69.0f;
+float audioIndex = 0.09f;
+float audioIndexStep = 0.350f;
 float audioIndexAmp = audioIndex;
 
 float[] audioData = new float[audioRange];
@@ -202,47 +198,34 @@ public void audioDataUpdate(){
   // ================================================================
   
   public void audioMidiValueUpdate(){
-    audioIndex = map(knob[6], 0, 100, 0.0f, 0.1f);
-    audioIndexStep = map(knob[7], 0, 100, 0.0f, 0.1f);
+    // audioIndex = map(knob[6], 0, 100, 0.0, 0.1);
+    // audioIndexStep = map(knob[7], 0, 100, 0.0, 0.1);
   }
-
-float xMod = 10;
-float yMod = 40;
-
-float side = 128;
+int section = audioRange;
+PVector[] ants = new PVector[section];
 
 // ================================================================
 
 public void renderCircles() {
-	// background(bgC, 25);
+	int audioIndex = 0;
 
-	stroke(0xffD34F1E); noFill();
+	for (int i = 0; i < audioRange; ++i) {
+		float step = (width / section);
+		float x = (i + 1) * step;
+		float audioDiff = audioData[audioIndex];
 
-	translate(width / 2, height /2);
-	// translate(0, height /2);
-	float t = frameCount * .05f;
-	float radius = 80;
-	
-	xMod = 100;
-	// float x = cos(t) * xMod;
+		float padding = height / 8;
+		float audioCalc = map(audioDiff, 0, 2, height + padding, 0 - padding);
+		float mover = audioCalc;
+		float y = audioCalc - 1;
+		ants[i] = new PVector(x, y);
 
-	yMod = 100;
-	// float y = sin(t) * yMod;
-
-	float angle = t * .5f;
-	rotate(angle);	
-	
-	float magicX = 20;
-	float magicY = 100;
-	float f = tan(10) * 500;
-
-	float x = t * sin(t) * 10;
-	float y = t * cos(t) * 10;
-	float w = cos(t/magicX) * f / 2;
-	float h = sin(t/magicY) * f / 20;
-
-	ellipse(x, y, w, h);
-	
+		float diameter = 2.0f;
+		fill(0);
+		ellipse(ants[i].x, ants[i].y, diameter, diameter);
+		++audioIndex;
+	}
+	audioIndex = 0;
 }
  
 
