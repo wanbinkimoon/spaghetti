@@ -129,7 +129,7 @@ public void renderHints(){
 	fill(0xff00AEFF);
 	textAlign(LEFT);
 	textSize(16);
-	String helpString = "Q: Quit    P: Save screenshot in ./render folder ";
+	String helpString = "Q: Quit    P: Save screenshot in ./render folder    A: Audio panel control";
 	text(helpString, 12, 28);
 }
 
@@ -274,7 +274,9 @@ public void shapeFormer(int line, int maxLines){
 		audioIndex += audioRange / points;
 	}
 
+	curveVertex(width, height / 2);
 	vertex(width, height / 2);
+	curveVertex(width, height / 2);
 	endShape();
 
 	audioIndex = 0;

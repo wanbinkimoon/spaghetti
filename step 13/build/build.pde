@@ -17,8 +17,8 @@ boolean audioPanel = false;
 
 void settings(){ 
 	pixelDensity(displayDensity());	
-	// fullScreen(P3D, 2);
-	size(stageW, stageH);
+	fullScreen();
+	// size(stageW, stageH);
 
 }
 
@@ -109,7 +109,8 @@ void renderHints(){
 	fill(#00AEFF);
 	textAlign(LEFT);
 	textSize(16);
-	String helpString = "Q: Quit    P: Save screenshot in ./render folder ";
+	String FPS =  String.format("%.2f", frameRate);
+	String helpString = "FPS: " + FPS + "    Q: Quit    S: Save screenshot in ./render folder    A: Audio panel control";
 	text(helpString, 12, 28);
 }
 

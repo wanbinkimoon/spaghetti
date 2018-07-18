@@ -5,20 +5,45 @@ int lines = 10;
 // ================================================================
 
 void renderCircles() {
-	for (int i = 1; i < lines; ++i) {
-		colorizer(i);
-		shapeFormer(i, lines);
+	boolean fader = false;
+	if(pad[3]) {
+		fader = false;
 	}
+	if(fader){
+		for (int i = 1; i < lines; ++i) {
+			colorizer(i);
+			shapeFormer(i, lines);
+		}
+	} else {
+			colorizer(0);
+			shapeFormer(0, lines);
+	}
+
 }
 
 // ================================================================
 
-void shapeFormer(int line, int maxLines){
-	int audioIndex = 0;
-	beginShape();
-	vertex(0, height / 2);
+float margin = 0;
 
-	int points = (int)map(knob[1], 0, 100, 2, audioRange);
+// ================================================================
+
+void shapeFormer(int line, int maxLines){
+	int audioIndex;
+	boolean move = false;
+	if(pad[2]) {
+		move = false;
+	}
+	if(move){
+		audioIndex = frameCount % audioRange;
+	} else {
+		audioIndex = 0;
+	}
+
+	margin = map(knob[2], 0, 100, 0, 100);
+	beginShape();
+	vertex(-margin, height / 2);
+
+	int points = (int)map(knob[8], 0, 100, 2, audioRange);
 
 	for (int j = 0; j < points; ++j) {
 		float step = (width / points);
@@ -39,12 +64,16 @@ void shapeFormer(int line, int maxLines){
 		ants[j] = new PVector(x, y);
 		curveVertex(ants[j].x, ants[j].y);
 		if(pad[1]){
-		vertex(ants[j].x, ants[j].y);
+			vertex(ants[j].x, ants[j].y);
 		}
-		audioIndex += audioRange / points;
+		if(move){
+			audioIndex = (audioIndex + (audioRange / points)) % audioRange;
+		} else {
+			audioIndex += audioRange / points;
+		}
 	}
 
-	vertex(width, height / 2);
+	vertex(width + margin, height / 2);
 	endShape();
 
 	audioIndex = 0;
@@ -97,16 +126,16 @@ void colorChoice(){
 
 	if(pad[6]){
 		// greens
-		palette[0]  = #00d700;
-		palette[1]  = #00ca00;
-		palette[2]  = #00bc00;
-		palette[3]  = #00af00;
-		palette[4]  = #00a200;
-		palette[5]  = #009500;
-		palette[6]  = #008700;
-		palette[7]  = #007a00;
-		palette[8]  = #006d00;
-		palette[9]  = #006000;
+		palette[0]  = #00d788;
+		palette[1]  = #00ca88;
+		palette[2]  = #00bc88;
+		palette[3]  = #00af88;
+		palette[4]  = #00a288;
+		palette[5]  = #009588;
+		palette[6]  = #008788;
+		palette[7]  = #007a88;
+		palette[8]  = #006d88;
+		palette[9]  = #006088;
 	}
 
 	if(pad[5]){

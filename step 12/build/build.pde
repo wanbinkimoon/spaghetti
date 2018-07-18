@@ -109,7 +109,7 @@ void renderHints(){
 	fill(#00AEFF);
 	textAlign(LEFT);
 	textSize(16);
-	String helpString = "Q: Quit    P: Save screenshot in ./render folder ";
+	String helpString = "Q: Quit    P: Save screenshot in ./render folder    A: Audio panel control";
 	text(helpString, 12, 28);
 }
 

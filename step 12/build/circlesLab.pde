@@ -39,7 +39,7 @@ void shapeFormer(int line, int maxLines){
 		ants[j] = new PVector(x, y);
 		curveVertex(ants[j].x, ants[j].y);
 		if(pad[1]){
-		vertex(ants[j].x, ants[j].y);
+			vertex(ants[j].x, ants[j].y);
 		}
 		audioIndex += audioRange / points;
 	}
