@@ -548,6 +548,7 @@ float noiseSpeed = .01f;
 // ================================================================
 
 public void noiseUpdate(){
+	noiseSpeed = map(knob[4], 0, 100, .01f, 1);
  	xoff += noiseSpeed;
   n = noise(xoff);
 }

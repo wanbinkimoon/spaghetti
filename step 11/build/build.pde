@@ -10,8 +10,6 @@ String dataPATH = "../../data";
 boolean DEBUG = false;
 boolean GRID = false;
 boolean MIDI = false;
-boolean showHint = false;
-boolean audioPanel = false;
 
 // ============================================================
 
@@ -37,20 +35,15 @@ void setup() {
 // ================================================================
 void draw() {
 	background(bgC, 20);
+	
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("❀ – Spaghetti – FPS: " + FPS);
+	panelsControl();
 
 	audioDataUpdate();
 	audioMidiValueUpdate();
 
-	if(showHint) {
-		renderHints();
-	}
-
-	if(audioPanel) {
-		audioPanel();
-	}
-
+	
 	renderCircles();
 }
 
@@ -66,6 +59,9 @@ void keyPressed(){
 			break;
 		case 'a':
 			showAudioPanel();
+			break;
+		case 'i':
+			showInfoPanel();
 			break;
 		case 'h':
 			showHelp();
@@ -92,6 +88,12 @@ void screenShot(){
 
 // ================================================================
 
+boolean showHint = false;
+boolean audioPanel = false;
+boolean infoPanel = false;
+
+// ================================================================
+
 void showHelp(){
 	showHint = !showHint;
 }
@@ -100,6 +102,38 @@ void showAudioPanel(){
 	audioPanel = !audioPanel;
 }
 
+void showInfoPanel(){
+	infoPanel = !infoPanel;
+}
+
+// ================================================================
+
+void panelsControl(){
+	if(showHint) {
+		renderHints();
+	}
+
+	if(infoPanel) {
+		renderInfos();
+	}
+
+	if(audioPanel) {
+		audioPanel();
+	}
+
+}
+
+// ================================================================
+
+void renderInfos(){
+	fill(75, 200); noStroke();
+	rect(0, 0, width, 48);
+	fill(#00AEFF);
+	textAlign(LEFT);
+	textSize(16);
+	String helpString = "noiseSpeed";
+	text(helpString, 12, 28);
+}
 
 // ================================================================
 
@@ -112,6 +146,7 @@ void renderHints(){
 	String helpString = "Q: Quit    P: Save screenshot in ./render folder ";
 	text(helpString, 12, 28);
 }
+
 
 // ================================================================
 

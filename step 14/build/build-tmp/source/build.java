@@ -30,8 +30,6 @@ String dataPATH = "../../data";
 boolean DEBUG = false;
 boolean GRID = false;
 boolean MIDI = false;
-boolean showHint = false;
-boolean audioPanel = false;
 
 // ============================================================
 
@@ -57,23 +55,18 @@ public void setup() {
 // ================================================================
 public void draw() {
 	background(bgC, 20);
+	
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("\u2740 \u2013 Spaghetti \u2013 FPS: " + FPS);
-
+	noiseUpdate();
+	println("n: "+n);
+	panelsControl();
 	audioDataUpdate();
 	audioMidiValueUpdate();
 
-	if(showHint) {
-		renderHints();
-	}
-
-	if(audioPanel) {
-		audioPanel();
-	}
-
 	if(!pad[8]) {
 		renderCircles();
-	} 
+	}
 	if(pad[9]) {
 		renderNeons();
 	}
@@ -91,6 +84,9 @@ public void keyPressed(){
 			break;
 		case 'a':
 			showAudioPanel();
+			break;
+		case 'i':
+			showInfoPanel();
 			break;
 		case 'h':
 			showHelp();
@@ -117,6 +113,12 @@ public void screenShot(){
 
 // ================================================================
 
+boolean showHint = false;
+boolean audioPanel = false;
+boolean infoPanel = false;
+
+// ================================================================
+
 public void showHelp(){
 	showHint = !showHint;
 }
@@ -125,6 +127,40 @@ public void showAudioPanel(){
 	audioPanel = !audioPanel;
 }
 
+public void showInfoPanel(){
+	infoPanel = !infoPanel;
+}
+
+// ================================================================
+
+public void panelsControl(){
+	if(showHint) {
+		renderHints();
+	}
+
+	if(infoPanel) {
+		renderInfos();
+	}
+
+	if(audioPanel) {
+		audioPanel();
+	}
+
+}
+
+// ================================================================
+
+public void renderInfos(){
+	fill(75, 200); noStroke();
+	rect(0, 0, width, 48);
+	fill(0xff00AEFF);
+	textAlign(LEFT);
+	textSize(16);	
+	String FPS =  String.format("%.2f", frameRate);
+	String noiseString =  String.format("%.2f", noiseSpeed);
+	String helpString = "FPS: " + FPS + "  \u2013 Noise speed: " + noiseString;
+	text(helpString, 12, 28);
+}
 
 // ================================================================
 
@@ -134,10 +170,10 @@ public void renderHints(){
 	fill(0xff00AEFF);
 	textAlign(LEFT);
 	textSize(16);
-	String FPS =  String.format("%.2f", frameRate);
-	String helpString = "FPS: " + FPS + "    Q: Quit    S: Save screenshot in ./render folder    A: Audio panel control";
+	String helpString = "Q: Quit    S: Save screenshot in ./render folder    A: Audio panel control";
 	text(helpString, 12, 28);
 }
+
 
 // ================================================================
 
@@ -267,7 +303,7 @@ boolean move = false;
 
 public void shapeFormer(int line, int maxLines){
 	int audioIndex;
-	
+	strokeWeight(1);
 	// make the scene slide
 	if(pad[2]) {
 		move = !move;
@@ -279,7 +315,7 @@ public void shapeFormer(int line, int maxLines){
 		audioIndex = 0;
 	}
 
-	margin = map(knob[2], 0, 100, 0, 500);
+	margin = map(knob[1], 0, 100, 0, 500);
 	beginShape();
 	vertex(-margin, height / 2);
 
@@ -574,16 +610,23 @@ int neons = 100;
 // ================================================================
 
 public void renderNeons() {
+	neons = (int)map(knob[15], 0, 100, 0, audioRange / 2);
+
 	for (int i = 0; i < neons; ++i) {
 		float x1 = 0;
 		float x2 = width;
-		float y1 = random(0, height);
-		float y2 = random(0, height);
+
+		noiseUpdate();
+		float positioner = n * i;
+		float y = map(positioner, 0, audioRange, 0, height);
 
 		stroke(255);
+		float thickness = audioData[i * 2] * 10;
+
+		strokeWeight(thickness);
 		beginShape();
-			vertex(x1, y1);
-			vertex(x2, y2);
+			vertex(x1, y);
+			vertex(x2, y);
 		endShape();
 	}
 }
@@ -595,8 +638,10 @@ float noiseSpeed = .01f;
 // ================================================================
 
 public void noiseUpdate(){
+	noiseSpeed = map(knob[4], 0, 100, .01f, 1);
  	xoff += noiseSpeed;
   n = noise(xoff);
+  
 }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "build" };

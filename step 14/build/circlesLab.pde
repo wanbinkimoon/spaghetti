@@ -31,7 +31,7 @@ boolean move = false;
 
 void shapeFormer(int line, int maxLines){
 	int audioIndex;
-	
+	strokeWeight(1);
 	// make the scene slide
 	if(pad[2]) {
 		move = !move;

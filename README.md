@@ -10,6 +10,7 @@ _______________________________________________
 
 ## Midi mapper
 Midi controlelr model: *Novation LaunchControl*
+**From step 16**
 
 ### Knobs
 
@@ -17,7 +18,7 @@ Midi controlelr model: *Novation LaunchControl*
  -  knob   *1* –> Controls waves lenght
  -  knob   *2* –> COntrols lines number
  -  knob   *3* –> 
- -  knob   *4* –> 
+ -  knob   *4* –> Controls noise speed
  -  knob   *5* –> Controls **audioAmp** value
  -  knob   *6* –> Controls **audioIndex** value
  -  knob   *7* –> Controls **audioIndexStep** value
@@ -33,16 +34,16 @@ Midi controlelr model: *Novation LaunchControl*
 
  ### Pads 
 
- -  pad   *0* –> 
- -  pad   *1* –> 
- -  pad   *2* –> 
- -  pad   *3* –> 
+ -  pad   *0* –> Triggers waves fill color
+ -  pad   *1* –> Triggers wave curve
+ -  pad   *2* –> Triggers wave slider
+ -  pad   *3* –> Triggers wave fader
  -  pad   *4* –> 
- -  pad   *5* –> 
- -  pad   *6* –> 
- -  pad   *7* –> 
- -  pad   *8* –> 
- -  pad   *9* –> 
+ -  pad   *5* –> Color palette pink 
+ -  pad   *6* –> Color palette teal
+ -  pad   *7* –> Color palette blue
+ -  pad   *8* –> Triggers Wave scene
+ -  pad   *9* –> Triggers Neon scene
  -  pad  *10* –> 
  -  pad  *11* –> 
  -  pad  *12* –> 

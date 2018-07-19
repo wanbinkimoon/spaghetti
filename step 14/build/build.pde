@@ -10,8 +10,6 @@ String dataPATH = "../../data";
 boolean DEBUG = false;
 boolean GRID = false;
 boolean MIDI = false;
-boolean showHint = false;
-boolean audioPanel = false;
 
 // ============================================================
 
@@ -37,23 +35,18 @@ void setup() {
 // ================================================================
 void draw() {
 	background(bgC, 20);
+	
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("❀ – Spaghetti – FPS: " + FPS);
-
+	noiseUpdate();
+	println("n: "+n);
+	panelsControl();
 	audioDataUpdate();
 	audioMidiValueUpdate();
 
-	if(showHint) {
-		renderHints();
-	}
-
-	if(audioPanel) {
-		audioPanel();
-	}
-
 	if(!pad[8]) {
 		renderCircles();
-	} 
+	}
 	if(pad[9]) {
 		renderNeons();
 	}
@@ -71,6 +64,9 @@ void keyPressed(){
 			break;
 		case 'a':
 			showAudioPanel();
+			break;
+		case 'i':
+			showInfoPanel();
 			break;
 		case 'h':
 			showHelp();
@@ -97,6 +93,12 @@ void screenShot(){
 
 // ================================================================
 
+boolean showHint = false;
+boolean audioPanel = false;
+boolean infoPanel = false;
+
+// ================================================================
+
 void showHelp(){
 	showHint = !showHint;
 }
@@ -105,6 +107,40 @@ void showAudioPanel(){
 	audioPanel = !audioPanel;
 }
 
+void showInfoPanel(){
+	infoPanel = !infoPanel;
+}
+
+// ================================================================
+
+void panelsControl(){
+	if(showHint) {
+		renderHints();
+	}
+
+	if(infoPanel) {
+		renderInfos();
+	}
+
+	if(audioPanel) {
+		audioPanel();
+	}
+
+}
+
+// ================================================================
+
+void renderInfos(){
+	fill(75, 200); noStroke();
+	rect(0, 0, width, 48);
+	fill(#00AEFF);
+	textAlign(LEFT);
+	textSize(16);	
+	String FPS =  String.format("%.2f", frameRate);
+	String noiseString =  String.format("%.2f", noiseSpeed);
+	String helpString = "FPS: " + FPS + "  – Noise speed: " + noiseString;
+	text(helpString, 12, 28);
+}
 
 // ================================================================
 
@@ -114,10 +150,10 @@ void renderHints(){
 	fill(#00AEFF);
 	textAlign(LEFT);
 	textSize(16);
-	String FPS =  String.format("%.2f", frameRate);
-	String helpString = "FPS: " + FPS + "    Q: Quit    S: Save screenshot in ./render folder    A: Audio panel control";
+	String helpString = "Q: Quit    S: Save screenshot in ./render folder    A: Audio panel control";
 	text(helpString, 12, 28);
 }
+
 
 // ================================================================
 
