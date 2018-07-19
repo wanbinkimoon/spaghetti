@@ -1,17 +1,6 @@
-# spaghetti
-🍝 - Series of processing sketches
+# Midi mapper
 
-_______________________________________________
-
-## Step 10
-![](step%2010%20%E2%80%93%20good/render/2.png)
-
-_______________________________________________
-
-## Midi mapper
-Midi controlelr model: *Novation LaunchControl*
-
-### Knobs
+## Knobs
 
  -  knob   *0* –> Controls waves height
  -  knob   *1* –> Controls waves lenght
@@ -31,7 +20,7 @@ Midi controlelr model: *Novation LaunchControl*
  -  knob  *15* –> 
 
 
- ### Pads 
+ ## Pads 
 
  -  pad   *0* –> 
  -  pad   *1* –> 
@@ -50,7 +39,7 @@ Midi controlelr model: *Novation LaunchControl*
  -  pad  *14* –> 
  -  pad  *15* –> 
 
- ### Arrows
+ ## Arrows
 
  -  arrow   *0* –> 
  -  arrow   *1* –> Triggers pad series 

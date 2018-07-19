@@ -71,7 +71,12 @@ public void draw() {
 		audioPanel();
 	}
 
-	renderCircles();
+	if(!pad[8]) {
+		renderCircles();
+	} 
+	if(pad[9]) {
+		renderNeons();
+	}
 }
 
 // ================================================================
@@ -232,13 +237,13 @@ public void audioDataUpdate(){
 int section = audioRange;
 PVector[] ants = new PVector[section];
 int lines = 10;
+boolean fader = false;
 
 // ================================================================
 
 public void renderCircles() {
-	boolean fader = false;
 	if(pad[3]) {
-		fader = false;
+		fader = !fader;
 	}
 	if(fader){
 		for (int i = 1; i < lines; ++i) {
@@ -255,22 +260,26 @@ public void renderCircles() {
 // ================================================================
 
 float margin = 0;
+boolean move = false;
 
 // ================================================================
 
+
 public void shapeFormer(int line, int maxLines){
 	int audioIndex;
-	boolean move = false;
+	
+	// make the scene slide
 	if(pad[2]) {
-		move = false;
+		move = !move;
 	}
+
 	if(move){
 		audioIndex = frameCount % audioRange;
 	} else {
 		audioIndex = 0;
 	}
 
-	margin = map(knob[2], 0, 100, 0, 100);
+	margin = map(knob[2], 0, 100, 0, 500);
 	beginShape();
 	vertex(-margin, height / 2);
 
@@ -320,7 +329,8 @@ public void colorizer(int index){
 	colorChoice();
 	stroke(palette[index]); noFill();
 	if(pad[0]) {
-		noStroke(); fill(palette[index]);
+		float alpha = map(knob[9], 0, 100, 0, 255);
+		noStroke(); fill(palette[index], alpha);
 	}
 }
 
@@ -445,7 +455,7 @@ public void midiMonitor(){
 
 // ================================================================
 
-int padNumb = 8;
+int padNumb = 8 * 2;
 boolean[] pad = new boolean[padNumb];
 
 // ================================================================
@@ -470,16 +480,27 @@ public void padSwitch(int channel, int number, int value){
 		}	
 	}
 	
-	if(number ==  9) pad[0] = !pad[0];
-	if(number == 10) pad[1] = !pad[1];
-	if(number == 11) pad[2] = !pad[2];
-	if(number == 12) pad[3] = !pad[3];
-	if(number == 25) pad[4] = !pad[4];
-	if(number == 26) pad[5] = !pad[5];
-	if(number == 27) pad[6] = !pad[6];
-	if(number == 28) pad[7] = !pad[7];
+	if(arrow[1]) {
+		if(number ==  9) pad[8] = !pad[8];
+		if(number == 10) pad[9] = !pad[9];
+		if(number == 11) pad[10] = !pad[10];
+		if(number == 12) pad[11] = !pad[11];
+		if(number == 25) pad[12] = !pad[12];
+		if(number == 26) pad[13] = !pad[13];
+		if(number == 27) pad[14] = !pad[14];
+		if(number == 28) pad[15] = !pad[15];
+	} else {
+		if(number ==  9) pad[0] = !pad[0];
+		if(number == 10) pad[1] = !pad[1];
+		if(number == 11) pad[2] = !pad[2];
+		if(number == 12) pad[3] = !pad[3];
+		if(number == 25) pad[4] = !pad[4];
+		if(number == 26) pad[5] = !pad[5];
+		if(number == 27) pad[6] = !pad[6];
+		if(number == 28) pad[7] = !pad[7];
+	}
 
-	padMonitor();
+	// padMonitor();
 }
 
 public void padMonitor(){
@@ -491,6 +512,14 @@ public void padMonitor(){
 	print("  5: " + pad[5]);
 	print("  6: " + pad[6]);
 	print("  7: " + pad[7] + "\n");
+	print("  8: " + pad[8]);
+	print("  9: " + pad[9]);
+	print("  10: " + pad[10]);
+	print("  11: " + pad[11]);
+	print("  12: " + pad[12]);
+	print("  13: " + pad[13]);
+	print("  14: " + pad[14]);
+	print("  15: " + pad[15] + "\n");
 	println();
 	println("____________________\n");
 	println();
@@ -538,6 +567,25 @@ public void arrowMonitor(){
 	println();
 	println("____________________\n");
 	println();
+}
+
+int neons = 100;
+
+// ================================================================
+
+public void renderNeons() {
+	for (int i = 0; i < neons; ++i) {
+		float x1 = 0;
+		float x2 = width;
+		float y1 = random(0, height);
+		float y2 = random(0, height);
+
+		stroke(255);
+		beginShape();
+			vertex(x1, y1);
+			vertex(x2, y2);
+		endShape();
+	}
 }
 
 float xoff = 0.0f;

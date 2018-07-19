@@ -10,12 +10,12 @@ FFT audioFFT;
 
 // ================================================================
 
-int audioRange  = 12;
+int audioRange  = 128;
 int audioMax = 100;
 
-float audioAmp = 412.0;
-float audioIndex = 0.69;
-float audioIndexStep = 0.518;
+float audioAmp = 69.0;
+float audioIndex = 0.09;
+float audioIndexStep = 0.350;
 float audioIndexAmp = audioIndex;
 
 float[] audioData = new float[audioRange];
@@ -68,8 +68,19 @@ void audioDataUpdate(){
   // ================================================================
   
   void audioMidiValueUpdate(){
-    if()
-    audioAmp = map(knob[6], 0, 100, 0.0, 800);
-    audioIndex = map(knob[6], 0, 100, 0.0, 0.2);
-    audioIndexStep = map(knob[7], 0, 100, 0.0, 0.1);
+    if(arrow[3]) {
+      audioAmp = map(knob[5], 0, 100, 20.0, 200.1);
+      audioIndex = map(knob[6], 0, 100, 0.0, 0.1);
+      audioIndexStep = map(knob[7], 0, 100, 0.0, 0.5);
+    }
+  }
+
+  void audioPanel(){
+    fill(75, 200); noStroke();
+    rect(0, 0, width, 48);
+    fill(#00AEFF);
+    textAlign(LEFT);
+    textSize(16);
+    String helpString = "AMP: " + audioAmp + " – INDEX: " + audioIndex + " – STEP: " + audioIndexStep;
+    text(helpString, 12, 28);
   }

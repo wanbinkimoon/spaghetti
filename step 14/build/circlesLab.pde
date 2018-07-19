@@ -1,13 +1,13 @@
 int section = audioRange;
 PVector[] ants = new PVector[section];
 int lines = 10;
+boolean fader = false;
 
 // ================================================================
 
 void renderCircles() {
-	boolean fader = false;
 	if(pad[3]) {
-		fader = false;
+		fader = !fader;
 	}
 	if(fader){
 		for (int i = 1; i < lines; ++i) {
@@ -24,22 +24,26 @@ void renderCircles() {
 // ================================================================
 
 float margin = 0;
+boolean move = false;
 
 // ================================================================
 
+
 void shapeFormer(int line, int maxLines){
 	int audioIndex;
-	boolean move = false;
+	
+	// make the scene slide
 	if(pad[2]) {
-		move = false;
+		move = !move;
 	}
+
 	if(move){
 		audioIndex = frameCount % audioRange;
 	} else {
 		audioIndex = 0;
 	}
 
-	margin = map(knob[2], 0, 100, 0, 100);
+	margin = map(knob[1], 0, 100, 0, 500);
 	beginShape();
 	vertex(-margin, height / 2);
 
@@ -89,7 +93,8 @@ void colorizer(int index){
 	colorChoice();
 	stroke(palette[index]); noFill();
 	if(pad[0]) {
-		noStroke(); fill(palette[index]);
+		float alpha = map(knob[9], 0, 100, 0, 255);
+		noStroke(); fill(palette[index], alpha);
 	}
 }
 
