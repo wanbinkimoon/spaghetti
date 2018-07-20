@@ -39,18 +39,15 @@ void draw() {
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("❀ – Spaghetti – FPS: " + FPS);
 	noiseUpdate();
-	println("n: "+n);
 	panelsControl();
 	audioDataUpdate();
 	audioMidiValueUpdate();
 
 	if(pad[8]) {
-		pad[9] = false;
 		renderWaves();
 	}
 
 	if(pad[9]) {
-		pad[8] = false;
 		renderMultipleWaves();
 	}
 

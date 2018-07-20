@@ -59,18 +59,15 @@ public void draw() {
 	String FPS =  String.format("%.2f", frameRate);
 	surface.setTitle("\u2740 \u2013 Spaghetti \u2013 FPS: " + FPS);
 	noiseUpdate();
-	println("n: "+n);
 	panelsControl();
 	audioDataUpdate();
 	audioMidiValueUpdate();
 
 	if(pad[8]) {
-		pad[9] = false;
 		renderWaves();
 	}
 
 	if(pad[9]) {
-		pad[8] = false;
 		renderMultipleWaves();
 	}
 
@@ -590,16 +587,35 @@ public void renderWaves() {
 	if(fader){
 		for (int i = 1; i < lines; ++i) {
 			colorizer(i, false, 0);
-			shapeFormer(i, lines);
+			shapeFormer(i, lines, 0);
 		}
 	} else {
 			colorizer(1, false, 0);
-			shapeFormer(0, lines);
+			shapeFormer(0, lines, 0);
 	}
 }
 
 public void renderMultipleWaves() {
-	shapeFormer(0, lines);
+	
+	if(pad[3]) {
+		fader = !fader;
+	}
+
+	for (int i = 1; i < lines; ++i) {
+		if(fader){
+			for (int j = 0; j < colorNumb; ++j) {				
+				int diff = 20 * j;
+				colorizer(i, true, j);
+				shapeFormer(i, lines, diff);
+			}
+		} else {
+			for (int j = 0; j < colorNumb; ++j) {				
+				int diff = 20 * j;
+				colorizer(i, true, j);
+				shapeFormer(0, lines, diff);
+			}
+		}
+	}
 }
 
 // ================================================================
@@ -610,7 +626,7 @@ boolean move = false;
 // ================================================================
 
 
-public void shapeFormer(int line, int maxLines){
+public void shapeFormer(int line, int maxLines, int diff){
 	int audioIndex;
 	strokeWeight(1);
 	// make the scene slide
@@ -632,6 +648,7 @@ public void shapeFormer(int line, int maxLines){
 
 	for (int j = 0; j < points; ++j) {
 		float step = (width / points);
+		float xSpread = (j + 1 + diff) * step;
 		float x = (j + 1) * step;
 
 		float audioDiff = audioData[audioIndex];
@@ -656,6 +673,8 @@ public void shapeFormer(int line, int maxLines){
 		} else {
 			audioIndex += audioRange / points;
 		}
+
+		audioIndex = (audioIndex + diff) % audioRange;	
 	}
 
 	vertex(width + margin, height / 2);
