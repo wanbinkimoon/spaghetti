@@ -552,17 +552,21 @@ public void renderNeons() {
 		float y = random(0, height);
 
 		float factor = map(knob[14], 0, 100, 0, 3);
-		float thickness = random(0, 30) * factor;
+		float minRand = audioData[i * (audioRange / maxNeons)];
+		float maxRand = audioData[i * (audioRange / maxNeons)] * 50;
+		float thickness = random(minRand, maxRand) * factor;
 
 		int index = i % lines;
-		int colorSelector = 0;
 
+		int alpha = constrain((int)thickness, 75, 255);
+		int painter = color(255, alpha);
 		if(pad[12]) {
-			colorSelector = (int)random(0, 3);
+			int colorSelector = (int)random(0, 3);
+			painter = palette[colorSelector][index];
 		}
 		
 		// stroke(255);
-		stroke(palette[colorSelector][index]);
+		stroke(painter);
 		strokeWeight(thickness);
 		beginShape();
 			vertex(x1, y);

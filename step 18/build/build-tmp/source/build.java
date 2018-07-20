@@ -25,11 +25,6 @@ String dataPATH = "../../data";
 
 // new palette
 // #ECA106 #D34F1E #91300A #5F1B00
-// ================================================================
-
-boolean DEBUG = false;
-boolean GRID = false;
-boolean MIDI = false;
 
 // ============================================================
 
@@ -63,16 +58,16 @@ public void draw() {
 	audioDataUpdate();
 	audioMidiValueUpdate();
 
+	if(pad[10]) {
+		renderNeons();
+	}
+
 	if(pad[8]) {
 		renderWaves();
 	}
 
 	if(pad[9]) {
 		renderMultipleWaves();
-	}
-
-	if(pad[10]) {
-		renderNeons();
 	}
 }
 
@@ -369,15 +364,13 @@ MidiBus myBus;
 public void controllerChange(int channel, int number, int value) {  
 	midiUpdate(channel, number, value);
 
-	if(DEBUG && MIDI) {
   	// Receive a controllerChange
-	  println();
-	  println("Controller Change:");
-	  println("--------");
-	  println("Channel:" + channel);
-	  println("Number:" + number);
-	  println("Value:" + value);
-	}
+	  // println();
+	  // println("Controller Change:");
+	  // println("--------");
+	  // println("Channel:" + channel);
+	  // println("Number:" + number);
+	  // println("Value:" + value);
 }
 
 // ================================================================
@@ -429,12 +422,12 @@ public void noteOn(int channel, int number, int value) {
 	padSwitch(channel, number, value);
 
   // Receive a controllerChange
-  // println();
-  // println("Controller Change:");
-  // println("--------");
-  // println("Channel:" + channel);
-  // println("Number:" + number);
-  // println("Value:" + value);
+  println();
+  println("Controller Change:");
+  println("--------");
+  println("Channel:" + channel);
+  println("Number:" + number);
+  println("Value:" + value);
 }
 
 public void padSwitch(int channel, int number, int value){
@@ -506,12 +499,12 @@ public void rawMidi(byte[] data) {
   // Receive some raw data
   // data[0] will be the status byte
   // data[1] and data[2] will contain the parameter of the message (e.g. pitch and volume for noteOn noteOff)
- //  println();
- //  println("Raw Midi Data:");
- //  println("--------");
- //  println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
-	// println("Number: " + number);	
-	// println("Value: " + value);	
+  println();
+  println("Raw Midi Data:");
+  println("--------");
+  println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
+	println("Number: " + number);	
+	println("Value: " + value);	
 }
 
 
@@ -552,17 +545,21 @@ public void renderNeons() {
 		float y = random(0, height);
 
 		float factor = map(knob[14], 0, 100, 0, 3);
-		float thickness = random(0, 30) * factor;
+		float minRand = audioData[i * (audioRange / maxNeons)];
+		float maxRand = audioData[i * (audioRange / maxNeons)] * 50;
+		float thickness = random(minRand, maxRand) * factor;
 
 		int index = i % lines;
-		int colorSelector = 0;
 
+		int alpha = constrain((int)thickness, 75, 255);
+		int painter = color(255, alpha);
 		if(pad[12]) {
-			colorSelector = (int)random(0, 3);
+			int colorSelector = (int)random(0, 3);
+			painter = palette[colorSelector][index];
 		}
 		
 		// stroke(255);
-		stroke(palette[colorSelector][index]);
+		stroke(painter);
 		strokeWeight(thickness);
 		beginShape();
 			vertex(x1, y);
