@@ -10,20 +10,20 @@ String dataPATH = "../../data";
 
 void settings(){ 
 	pixelDensity(displayDensity());	
-	fullScreen();
-	// size(stageW, stageH);
-
+	// fullScreen();
+	size(stageW, stageH);
 }
 
 // ================================================================
 
 void setup() {
 	midiSetup();
+	midiMonitoSetup();
+
 	audioSettings();
 
 	surface.setResizable(true);
   // surface.setIconImage(icon.image);
-
 	background(bgC, 20);
 }
 
