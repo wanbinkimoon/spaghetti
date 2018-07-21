@@ -12,8 +12,8 @@ Midi controlelr model: *Novation LaunchControl*
  -  knob   *5* –> Controls **audioAmp** value
  -  knob   *6* –> Controls **audioIndex** value
  -  knob   *7* –> Controls **audioIndexStep** value
- -  knob   *8* –> 
- -  knob   *9* –> 
+ -  knob   *8* –> ---
+ -  knob   *9* –> ---
  -  knob  *10* –> Controls neon's shifting
  -  knob  *11* –> Controls neon's alpha
  -  knob  *12* –> controls neon's y axis span from center 
@@ -39,7 +39,7 @@ Midi controlelr model: *Novation LaunchControl*
  -  pad  *12* –> Triggers neons multicolor
  -  pad  *13* –> Triggers neons multicolor specular
  -  pad  *14* –> Triggers vertically shifted neons 
- -  pad  *15* –> 
+ -  pad  *15* –> ---
 
  ### Arrows
 

@@ -9,14 +9,14 @@ void midiMonitoSetup(){
 public class SecondApplet extends PApplet {
  
   public void settings() {
-    size(600, 800);
+    size(600, 860);
   }
 
   // ================================================================
  
 	int stageM = 40;
-	int barH = 40;
-	int barPadding = 16;
+	int barH = 44;
+	int barPadding = 28;
 	int textMargin = 8;
 	
 	// ================================================================
@@ -42,7 +42,14 @@ public class SecondApplet extends PApplet {
 
   // ================================================================
 
+  String[] knobDesc = new String[knobNumb];
+  String[] padDesc = new String[padNumb];
+
+  // ================================================================
+
   void knobData(int index){
+    knobLabels();
+
   	fill(knobColor); noStroke();
   	String knobOneData = Integer.toString(knob[index]);
   	String knobTwoData = Integer.toString(knob[index + 8]);
@@ -54,24 +61,61 @@ public class SecondApplet extends PApplet {
   	int rectW = (width / 2) - barPadding - stageM;
   	int rectH = 20;
   	int rectPerc = (int)map(knob[index], 0, 100, 0, rectW); 
+
+    String knobOneDesc = knobDesc[index];
   	fill(baseColor);
 		rect(x, y + (barPadding / 2) , rectW, rectH);
-  	fill(knobColor);
-		rect(x, y + (barPadding / 2) , rectPerc, rectH);
+    fill(knobColor);
+    rect(x, y + (barPadding / 2) , rectPerc, rectH);
+    blendMode(DIFFERENCE);
+    text(knobOneDesc, x + (barPadding / 4), y + (barPadding * 1));
+    blendMode(BLEND);
+
+    fill(255);
 		text(knobOneString, x, y + textMargin);
 		
+    String knobTwoDesc = knobDesc[index + 8];
   	x = width / 2;
   	rectPerc = (int)map(knob[index + 8], 0, 100, 0, rectW); 
+
   	fill(baseColor);
-		rect(x, y + (barPadding / 2), rectW, rectH);
-  	fill(knobColor);
-		rect(x, y + (barPadding / 2), rectPerc, rectH);
+    rect(x, y + (barPadding / 2), rectW, rectH);
+    fill(knobColor);
+    rect(x, y + (barPadding / 2), rectPerc, rectH);
+    blendMode(DIFFERENCE);
+    text(knobTwoDesc, x + (barPadding / 4), y + (barPadding * 1));
+    blendMode(BLEND);
+
+    fill(255);
 		text(knobTwoString, x, y + textMargin);
   }
 
   // ================================================================
   
+  void knobLabels(){
+    knobDesc[0] = "Controls waves height";
+    knobDesc[1] = "Controls waves lenght";
+    knobDesc[2] = "Controls lines number";
+    knobDesc[3] = "Controls waves number";
+    knobDesc[4] = "Controls noise speed";
+    knobDesc[5] = "Controls **audioAmp** value";
+    knobDesc[6] = "Controls **audioIndex** value";
+    knobDesc[7] = "Controls **audioIndexStep** value";
+    knobDesc[8] = "---";
+    knobDesc[9] = "---";
+    knobDesc[10] = "Controls neon's shifting";
+    knobDesc[11] = "Controls neon's alpha";
+    knobDesc[12] = "controls neon's y axis span from center ";
+    knobDesc[13] = "Controls neon's widness";
+    knobDesc[14] = "Controls audio factor on neons";
+    knobDesc[15] = "Controls neons number";
+  }
+
+  // ================================================================
+  
   void padData(int index){
+    padLabels();
+
   	fill(padColor); noStroke();
   	String padOneData = pad[index] ? "ON" : "OFF";
   	String padTwoData = pad[index + 8] ? "ON" : "OFF";
@@ -82,14 +126,23 @@ public class SecondApplet extends PApplet {
   	int y = stageM + (barH * index) + barPadding + (height / 2);
   	int rectW = (width / 2) - barPadding - stageM;
   	int rectH = 20;
-  	 
-  	if(pad[index]){
-  		fill(padColor);
-  	} else {
-  		fill(baseColor);
-  	}
-		rect(x, y + (barPadding / 2) , rectW, rectH);
-		fill(padColor);
+     
+    if(pad[index]){
+      fill(padColor);
+    } else {
+      fill(baseColor);
+    }
+    rect(x, y + (barPadding / 2) , rectW, rectH);
+    String padOneDesc = padDesc[index];
+
+    if(!pad[index]){
+      fill(padColor);
+    } else {
+      fill(baseColor);
+    }
+    text(padOneDesc, x + (barPadding / 4), y + (barPadding * 1));
+
+		fill(255);
 		text(padOneString, x, y + textMargin);
 		
   	x = width / 2;
@@ -100,12 +153,41 @@ public class SecondApplet extends PApplet {
   		fill(baseColor);
   	}
 		rect(x, y + (barPadding / 2), rectW, rectH);
-		fill(padColor);
+
+    String padTwoDesc = padDesc[index];
+    if(!pad[index + 8]){
+      fill(padColor);
+    } else {
+      fill(baseColor);
+    }
+    text(padTwoDesc, x + (barPadding / 4), y + (barPadding * 1));
+
+		fill(255);
 		text(padTwoString, x, y + textMargin);
   }
 
   // ================================================================
+  
+  void padLabels(){
+    padDesc[0] = "Triggers waves fill color"; 
+    padDesc[1] = "Triggers wave curve"; 
+    padDesc[2] = "Triggers wave slider"; 
+    padDesc[3] = "Triggers wave fader"; 
+    padDesc[4] = "Color waves palette pink"; 
+    padDesc[5] = "Color waves palette pink"; 
+    padDesc[6] = "Color waves palette teal"; 
+    padDesc[7] = "Color waves palette blue"; 
+    padDesc[8] = "Triggers Wave scene"; 
+    padDesc[9] = "Triggers Multiple Wave scene"; 
+    padDesc[10] = "Triggers Neon scene";
+    padDesc[11] = "Triggers neons height";
+    padDesc[12] = "Triggers neons multicolor";
+    padDesc[13] = "Triggers neons multicolor specular";
+    padDesc[14] = "Triggers vertically shifted neons ";
+    padDesc[15] = "---";
+  }
 
+  // ================================================================
   public void keyPressed(){	
 		switch (key) {
 			case 'q':
