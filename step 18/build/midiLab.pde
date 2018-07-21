@@ -67,12 +67,12 @@ void noteOn(int channel, int number, int value) {
 	padSwitch(channel, number, value);
 
   // Receive a controllerChange
-  println();
-  println("Controller Change:");
-  println("--------");
-  println("Channel:" + channel);
-  println("Number:" + number);
-  println("Value:" + value);
+  // println();
+  // println("Controller Change:");
+  // println("--------");
+  // println("Channel:" + channel);
+  // println("Number:" + number);
+  // println("Value:" + value);
 }
 
 void padSwitch(int channel, int number, int value){
@@ -144,12 +144,12 @@ void rawMidi(byte[] data) {
   // Receive some raw data
   // data[0] will be the status byte
   // data[1] and data[2] will contain the parameter of the message (e.g. pitch and volume for noteOn noteOff)
-  println();
-  println("Raw Midi Data:");
-  println("--------");
-  println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
-	println("Number: " + number);	
-	println("Value: " + value);	
+ //  println();
+ //  println("Raw Midi Data:");
+ //  println("--------");
+ //  println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
+	// println("Number: " + number);	
+	// println("Value: " + value);	
 }
 
 

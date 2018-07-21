@@ -11,21 +11,20 @@ void colorizer(int index, boolean multiple, int set){
 	if(multiple){
 		nowColor = palette[set][index];
 	} else {
-		if(pad[15]) {
+		if(pad[7]) {
 			nowColor = palette[0][index];
-		} else if(pad[14]) {
+		} else if(pad[6]) {
 			nowColor = palette[1][index];
-		} else if(pad[13]) {
+		} else if(pad[5]) {
 			nowColor = palette[2][index];
-		} else if(pad[12]) {
+		} else if(pad[4]) {
 			nowColor = palette[3][index];
 		}
 	}
 
 	stroke(nowColor); noFill();
 	if(pad[0]) {
-		float alpha = map(knob[9], 0, 100, 0, 255);
-		noStroke(); fill(nowColor, alpha);
+		noStroke(); fill(nowColor);
 	}
 }
 

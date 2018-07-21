@@ -70,7 +70,7 @@ void shapeFormer(int line, int maxLines, int diff){
 	beginShape();
 	vertex(-margin, height / 2);
 
-	int points = (int)map(knob[8], 0, 100, 2, audioRange);
+	int points = (int)map(knob[3], 0, 100, 2, audioRange);
 
 	for (int j = 0; j < points; ++j) {
 		float step = (width / points);
