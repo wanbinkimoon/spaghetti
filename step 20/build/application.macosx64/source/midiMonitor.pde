@@ -1,12 +1,12 @@
 void midiMonitoSetup(){
 	String[] args = {"Midi Monitor"};
-	SecondApplet sa = new SecondApplet();
+	MidiMonitor sa = new MidiMonitor();
   PApplet.runSketch(args, sa);
 }
 
 // ================================================================
 
-public class SecondApplet extends PApplet {
+public class MidiMonitor extends PApplet {
  
   public void settings() {
     size(600, 860);
@@ -173,10 +173,10 @@ public class SecondApplet extends PApplet {
     padDesc[1] = "Triggers wave curve"; 
     padDesc[2] = "Triggers wave slider"; 
     padDesc[3] = "Triggers wave fader"; 
-    padDesc[4] = "Color waves palette pink"; 
-    padDesc[5] = "Color waves palette pink"; 
-    padDesc[6] = "Color waves palette teal"; 
-    padDesc[7] = "Color waves palette blue"; 
+    padDesc[4] = "---"; 
+    padDesc[5] = "---"; 
+    padDesc[6] = "---"; 
+    padDesc[7] = "---"; 
     padDesc[8] = "Triggers Wave scene"; 
     padDesc[9] = "Triggers Multiple Wave scene"; 
     padDesc[10] = "Triggers Neon scene";

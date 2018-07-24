@@ -18,8 +18,8 @@ import java.io.IOException;
 
 public class build extends PApplet {
 
-int stageW      = 1200;
-int stageH      = 400;
+int stageW      = 1000;
+int stageH      = 480;
 int bgC       = 0xff2F2F2F;
 String dataPATH = "../../data";
 
@@ -30,8 +30,8 @@ String dataPATH = "../../data";
 
 public void settings(){ 
 	pixelDensity(displayDensity());	
-	// fullScreen();
-	size(stageW, stageH);
+	fullScreen(P2D, 2);
+	// size(stageW, stageH);
 }
 
 // ================================================================
@@ -39,7 +39,7 @@ public void settings(){
 public void setup() {
 	midiSetup();
 	midiMonitoSetup();
-
+	keyboardMonitoSetup();
 	audioSettings();
 
 	surface.setResizable(true);
@@ -74,6 +74,7 @@ public void draw() {
 // ================================================================
 
 public void keyPressed(){	
+	keyboardSwitcher(key);
 	switch (key) {
 		case 'q':
 			exit();
@@ -210,6 +211,7 @@ float[] audioData = new float[audioRange];
 public void audioSettings(){
   minim = new Minim(this);
   audio = minim.getLineIn(Minim.STEREO);
+  // audio = minim.getInputStream();
 
   audioFFT = new FFT(audio.bufferSize(), audio.sampleRate());
   audioFFT.linAverages(audioRange);
@@ -282,17 +284,17 @@ public void colorizer(int index, boolean multiple, int set){
 	if(multiple){
 		nowColor = palette[set][index];
 	} else {
-		if(pad[7]) {
+		if(keyBool[0]) {
 			nowColor = palette[0][index];
-		} else if(pad[6]) {
+		} else if(keyBool[1]) {
 			nowColor = palette[1][index];
-		} else if(pad[5]) {
+		} else if(keyBool[2]) {
 			nowColor = palette[2][index];
-		} else if(pad[4]) {
+		} else if(keyBool[3]) {
 			nowColor = palette[3][index];
 		}
 	}
-
+	
 	stroke(nowColor); noFill();
 	if(pad[0]) {
 		noStroke(); fill(nowColor);
@@ -351,6 +353,134 @@ public void setColors(){
 	palette[3][7]  = 0xffff7aff;
 	palette[3][8]  = 0xffff6dff;
 	palette[3][9]  = 0xffff6ff0;
+}
+int keyNumb = 10;
+boolean[] keyBool = new boolean[keyNumb];
+
+// ================================================================
+
+public void keyboardSwitcher(char key){
+
+		for (int i = 0; i < keyNumb; ++i) {
+				keyBool[i] = false;
+		}	
+
+		switch (key) {
+		case '1':
+			keyBool[0] = !keyBool[0];
+			break;
+		case '2':
+			keyBool[1] = !keyBool[1];
+			break;
+		case '3':
+			keyBool[2] = !keyBool[2];
+			break;
+		case '4':
+			keyBool[3] = !keyBool[3];
+			break;
+		case '5':
+			keyBool[4] = !keyBool[4];
+			break;
+		case '6':
+			keyBool[5] = !keyBool[5];
+			break;
+		case '7':
+			keyBool[6] = !keyBool[6];
+			break;
+		case '8':
+			keyBool[7] = !keyBool[7];
+			break;
+		case '9':
+			keyBool[8] = !keyBool[8];
+			break;
+		case '0':
+			keyBool[9] = !keyBool[9];
+			break;
+		}
+}
+public void keyboardMonitoSetup(){
+	String[] args = {"Keyboard Monitor"};
+	KeyMonitor keyDisplay = new KeyMonitor();
+  PApplet.runSketch(args, keyDisplay);
+}
+
+// ================================================================
+
+public class KeyMonitor extends PApplet {
+  int stageM = 40;
+  int rectS = 44;
+  int keyPadding = 20;
+  int monitorW = (stageM * 2) + (rectS * keyNumb) + (keyPadding * keyNumb) - keyPadding;
+  int monitorH = (stageM * 2) + (rectS * 2);
+
+  public void settings() {
+    size(monitorW, monitorH);
+  }
+
+  // ================================================================
+
+	int keyColor = 0xffFF006C;
+	int baseColor = color(50, 200);
+
+	// ================================================================
+	
+  public void draw() {
+  	background(0xff432160);
+
+    for (int i = 0; i < keyNumb; ++i) {
+  		keyData(i);
+      if(keyBool[i]) {
+        fill(255);
+        text(keyDesc[i], stageM, stageM + (rectS / 4));
+      }
+  	}
+  }
+
+  // ================================================================
+
+  String[] keyDesc = new String[keyNumb];
+
+  
+  // ================================================================
+
+  public void keyData(int index){
+    keyLabels();
+    int x = stageM + ((rectS + keyPadding) * index);
+    int y = stageM + rectS;
+     
+    if(keyBool[index]){
+      fill(keyColor);
+    } else {
+      blendMode(MULTIPLY);
+      fill(baseColor);
+      blendMode(BLEND);
+    }
+    rect(x, y , rectS, rectS);
+
+    if(!keyBool[index]){
+      fill(keyColor);
+    } else {
+      blendMode(MULTIPLY);
+      fill(baseColor);
+      blendMode(BLEND);
+    }
+    text(Integer.toString(index + 1), x + (rectS / 4), y + (rectS / 2) + (rectS / 4));
+  }
+
+  // ================================================================
+  
+  public void keyLabels(){
+    keyDesc[0] = "Palette 1 \u2013 Oranges";
+    keyDesc[1] = "Palette 2 \u2013 Blues";
+    keyDesc[2] = "Palette 3 \u2013 Teals";
+    keyDesc[3] = "Palette 4 \u2013 Pinks";
+    keyDesc[4] = "Palette 5 \u2013 N/A";
+    keyDesc[5] = "Palette 6 \u2013 N/A";
+    keyDesc[6] = "Palette 7 \u2013 N/A";
+    keyDesc[7] = "Palette 8 \u2013 N/A";
+    keyDesc[8] = "Palette 9 \u2013 N/A";
+    keyDesc[9] = "Palette 10 \u2013 N/A";
+  }
 }
  
 
@@ -457,6 +587,15 @@ public void padSwitch(int channel, int number, int value){
 		if(number == 28) pad[7] = !pad[7];
 	}
 
+	// NOTE: using this method is possibile to 
+	// trigger midi pad colors read the documentation in order to understand how
+	// https://d2xhy469pqj8rc.cloudfront.net/sites/default/files/novation/downloads/6958/launch-control-programmers-reference-guide.pdf
+	// myBus.sendMessage(
+ 	//    new byte[] {
+ 	//      (byte)0xF0, (byte)0x1, (byte)0x2, (byte)0x3, (byte)0x4, (byte)0xF7
+ 	// }
+  // );
+
 	// padMonitor();
 }
 
@@ -494,16 +633,17 @@ public void rawMidi(byte[] data) {
 	int value = (int)(data[2] & 0xFF);
 
 	arrowSwitch(number);
-	padSelector((int)(data[0] & 0xFF), number);
+	// padSelector((int)(data[0] & 0xFF), number);
+
   // Receive some raw data
   // data[0] will be the status byte
   // data[1] and data[2] will contain the parameter of the message (e.g. pitch and volume for noteOn noteOff)
  //  println();
-  println("Raw Midi Data:");
-  println("--------");
-  println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
-	println("Number: " + number);	
-	println("Value: " + value);	
+ //  println("Raw Midi Data:");
+ //  println("--------");
+ //  println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
+	// println("Number: " + number);	
+	// println("Value: " + value);	
 }
 
 
@@ -531,47 +671,50 @@ public void arrowMonitor(){
 
 int setNumb = 8;
 boolean[] set = new boolean[padNumb];
-
+  
 // ================================================================
 
 public void padSelector(int command, int number){
-	println("command: "+ command);
-	if(command == 247){
-		if(number ==  9) set[0] = !set[0];
-		if(number == 10) set[1] = !set[1];
-		if(number == 11) set[2] = !set[2];
-		if(number == 12) set[3] = !set[3];
-		if(number == 25) set[4] = !set[4];
-		if(number == 26) set[5] = !set[5];
-		if(number == 27) set[6] = !set[6];
-		if(number == 28) set[7] = !set[7];		
-	}
+	// println("command: "+ command);
 
-	setMonitor();
+	// if(command == 247){
+
+	// }
+
+	// if(number ==  9) set[0] = !set[0];
+	// if(number == 10) set[1] = !set[1];
+	// if(number == 11) set[2] = !set[2];
+	// if(number == 12) set[3] = !set[3];
+	// if(number == 25) set[4] = !set[4];
+	// if(number == 26) set[5] = !set[5];
+	// if(number == 27) set[6] = !set[6];
+	// if(number == 28) set[7] = !set[7];		
+
+	// setMonitor();
 }
 
 public void setMonitor(){
-	print("  \u2013 Set 0: " + set[0]);
-	print("  \u2013 Set 1: " + set[1]);
-	print("  \u2013 Set 2: " + set[2]);
-	print("  \u2013 Set 3: " + set[3]);
-	print("  \u2013 Set 4: " + set[4]);
-	print("  \u2013 Set 5: " + set[5]);
-	print("  \u2013 Set 6: " + set[6]);
-	print("  \u2013 Set 7: " + set[7] + "\n");
+	print("  - Set 0: " + set[0]);
+	print("  - Set 1: " + set[1]);
+	print("  - Set 2: " + set[2]);
+	print("  - Set 3: " + set[3]);
+	print("  - Set 4: " + set[4]);
+	print("  - Set 5: " + set[5]);
+	print("  - Set 6: " + set[6]);
+	print("  - Set 7: " + set[7] + "\n");
 	println();
 	println("____________________\n");
 	println();
 }
 public void midiMonitoSetup(){
 	String[] args = {"Midi Monitor"};
-	SecondApplet sa = new SecondApplet();
+	MidiMonitor sa = new MidiMonitor();
   PApplet.runSketch(args, sa);
 }
 
 // ================================================================
 
-public class SecondApplet extends PApplet {
+public class MidiMonitor extends PApplet {
  
   public void settings() {
     size(600, 860);
@@ -738,10 +881,10 @@ public class SecondApplet extends PApplet {
     padDesc[1] = "Triggers wave curve"; 
     padDesc[2] = "Triggers wave slider"; 
     padDesc[3] = "Triggers wave fader"; 
-    padDesc[4] = "Color waves palette pink"; 
-    padDesc[5] = "Color waves palette pink"; 
-    padDesc[6] = "Color waves palette teal"; 
-    padDesc[7] = "Color waves palette blue"; 
+    padDesc[4] = "---"; 
+    padDesc[5] = "---"; 
+    padDesc[6] = "---"; 
+    padDesc[7] = "---"; 
     padDesc[8] = "Triggers Wave scene"; 
     padDesc[9] = "Triggers Multiple Wave scene"; 
     padDesc[10] = "Triggers Neon scene";

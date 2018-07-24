@@ -110,7 +110,7 @@ void padSwitch(int channel, int number, int value){
  	//    new byte[] {
  	//      (byte)0xF0, (byte)0x1, (byte)0x2, (byte)0x3, (byte)0x4, (byte)0xF7
  	// }
-  );
+  // );
 
 	// padMonitor();
 }
@@ -187,15 +187,15 @@ void arrowMonitor(){
 
 int setNumb = 8;
 boolean[] set = new boolean[padNumb];
-boolean active   
+  
 // ================================================================
 
 void padSelector(int command, int number){
 	// println("command: "+ command);
 
-	if(command == 247){
+	// if(command == 247){
 
-	}
+	// }
 
 	// if(number ==  9) set[0] = !set[0];
 	// if(number == 10) set[1] = !set[1];
